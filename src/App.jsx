@@ -18,43 +18,34 @@ import ContentCopyTwoToneIcon from '@mui/icons-material/ContentCopyTwoTone';
 
 
 function App() {
-
-
-
-
-
   const [password, setPassword] = useState('');
   const [length, setLength] = useState(4);
   const [includeUppercase, setIncludeUppercase] = useState(true);
   const [includeLowercase, setIncludeLowercase] = useState(true);
   const [includeNumbers, setIncludeNumbers] = useState(true);
   const [includeSpecialChars, setIncludeSpecialChars] = useState(true);
-  const [copy, setCopy] = useState(false)
+  const [copy, setCopy] = useState(false);
 
   const generatePassword = () => {
-    setCopy(false)
+    setCopy(false);
 
-    const charset = (
-      (includeUppercase ? 'ABCDEVWXYZ' : '') +
-      (includeLowercase ? 'abcwxyz' : '') +
-      (includeNumbers ? '012389' : '') +
-      (includeSpecialChars ? '@#$%&_+' : '')
-    );
-    console.log(charset)
+    const charset =
+      (includeUppercase ? 'ABXYZ' : '') +
+      (includeLowercase ? 'abyz' : '') +
+      (includeNumbers ? '0189' : '') +
+      (includeSpecialChars ? '@#_+' : '');
+
     if (charset.length <= 0) {
-      
-      toast.error( "Please select any  one", {
-       
-        theme: "colored"
-      })
-      return
+      toast.error('Please select any one', {
+        theme: 'colored',
+      });
+      return;
     }
 
     let generatedPassword = '';
 
     for (let i = 0; i < length; i++) {
       const randomIndex = Math.floor(Math.random() * charset.length);
-      console.log(randomIndex)
       generatedPassword += charset[randomIndex];
     }
 
@@ -65,19 +56,27 @@ function App() {
     setLength(newValue);
   };
 
-  const copystatus = copy ? 'Copied' : 'Copy'
-
-
+  const copystatus = copy ? 'Copied' : 'Copy';
 
   return (
     <>
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-slate-700 to-black text-white p-16">
-        <h2 className="text-3xl font-bold mb-36 ">Password Generator</h2>
-        <div className="flex w-full ">
-          <div className=" flex flex-col w-6/12  ml-20">
-            <div className="flex  items-center mb-4  space-x-4">
-              <h3 className="text-xl font-bold mb-2">Generated Password</h3>
-              <div className="border p-2 w-64 h-8 text-center items-center"><span className='mb-4'>{password}</span></div>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-slate-700 to-black text-white p-4 sm:p-8">
+        <h2 className="text-3xl font-bold mb-36 sm:mb-12">Password Generator</h2>
+
+        <div className="flex flex-col mt-10 sm:flex-row  w-full">
+          <div className="flex flex-col w-full space-y-10 sm:w-1/2 mr-0 sm:mr-4 mb-4 sm:mb-0 ">
+            <div className="flex items-center   mb-4 space-x-4">
+              <motion.h3 className="text-xl font-bold mb-2" initial={{ y: -1000 }}
+                animate={{ y: 0, transition: { duration: 18, ease: "anticipate", type: "spring", stiffness: 80, damping: 16 } }}>Generated Password</motion.h3>
+
+              <motion.div
+                className="border p-2 w-full sm:w-64 h-8 text-center items-center"
+                initial={{ y: -1000 }}
+                animate={{ y: 0, transition: { duration: 18, ease: "easeInOut", type: "spring", stiffness: 80, damping: 18 } }}
+              >
+                <span className='mb-4'>{password}</span>
+              </motion.div>
+
               <CopyToClipboard text={password}>
                 <Tooltip title={copystatus} enterDelay={200} leaveDelay={1000}>
                   {!copy ? (
@@ -94,27 +93,39 @@ function App() {
                 </Tooltip>
               </CopyToClipboard>
             </div>
-            <div className="w-3/4 h-48 mt-8 ">
-              <p className=' text-semibold font-medium '>Creating a strong and secure password is crucial to safeguarding your online accounts and personal information. When using our password generator, we recommend enabling all options—uppercase and lowercase letters, numbers, and special characters. By incorporating a diverse set of characters, your password becomes more resilient against various hacking methods.</p>
-            </div>
-            <div >
 
+            <div className="w-full">
+              <motion.div
+                initial={{ x: -100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1, transition: { duration: 1.5, ease: "easeInOut", delay: 0.3 } }}
+                className="text-semibold font-medium text-sm sm:text-base"
+              >
+                Creating a strong and secure password is crucial to safeguarding your online accounts and personal information. When using our password generator, we recommend enabling all options—uppercase and lowercase letters, numbers, and special characters. By incorporating a diverse set of characters, your password becomes more resilient against various hacking methods.
+              </motion.div>
+            </div>
+
+            <motion.div
+              initial={{ x: -1000, opacity: 0 }}
+              animate={{ x: 0, opacity: 1, transition: { duration: 25, ease: "easeInOut", type: "spring", stiffness: 80, damping: 29, delay: 0.2 } }}
+              className="mt-4"
+            >
               <Button
                 variant="contained"
                 color="success"
                 onClick={generatePassword}
-
+                className="w-full"
               >
                 Generate Password
               </Button>
-            </div>
+            </motion.div>
           </div>
 
-          <div className="flex flex-col w-6/12 bg-slate  items-center ">
-            <div className="flex  w-3/4 justify-around ">
-              <h1 className='text-bold font-medium mt-2 space-x-4'>Password Length <span className='border rounded px-2 shadow-md bg-slate-200 text-black ml-3'>{length}</span></h1>
+          <div className="flex flex-col w-full sm:w-1/2 bg-slate items-center mt-4 sm:mt-0">
+            <motion.div className="flex w-full sm:w-3/4 justify-around"
+              initial={{ y: -1000 }}
+              animate={{ y: 0, transition: { duration: 8, ease: "easeInOut", type: "spring", stiffness: 80, damping: 12 } }}>
+              <h1 className='text-bold font-medium mt-2 space-x-4 text-sm sm:text-base'>Password Length <span className='border rounded px-2 shadow-md bg-slate-200 text-black ml-3'>{length}</span></h1>
               <div className=" w-2/4">
-
                 <Slider
                   aria-labelledby="slider-label"
                   value={length}
@@ -127,11 +138,11 @@ function App() {
                   max={12}
                 />
               </div>
-            </div>
-            <div className="  mr-52 mt-8">
-              
+            </motion.div>
 
-              <div className="flex space-x-2 mb-4">
+            <div className="w-full sm:w-3/4 mt-8 ml-12  sm:mb-8">
+              <motion.div className="flex space-x-2 mb-4" initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1, transition: { duration: 18, ease: "easeInOut", type: "spring", stiffness: 40, damping: 13, delay: 0.56 } }}>
                 <motion.h1
                   className="text-bold font-medium mt-2"
                   initial={{ textDecoration: includeUppercase ? "none" : "line-through" }}
@@ -145,9 +156,10 @@ function App() {
                   checked={includeUppercase}
                   onChange={() => setIncludeUppercase(!includeUppercase)}
                 />
-              </div>
+              </motion.div>
 
-              <div className="flex space-x-2 mb-4">
+              <motion.div className="flex space-x-2 mb-4" initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1, transition: { duration: 18, ease: "easeInOut", type: "spring", stiffness: 40, damping: 13, delay: 0.98 } }}>
                 <motion.h1
                   className="text-bold font-medium mt-2"
                   initial={{ textDecoration: includeLowercase ? "none" : "line-through" }}
@@ -161,9 +173,10 @@ function App() {
                   checked={includeLowercase}
                   onChange={() => setIncludeLowercase(!includeLowercase)}
                 />
-              </div>
+              </motion.div>
 
-              <div className="flex space-x-2 mb-4">
+              <motion.div className="flex space-x-2 mb-4" initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1, transition: { duration: 18, ease: "easeInOut", type: "spring", stiffness: 40, damping: 13, delay: 1.5 } }}>
                 <motion.h1
                   className="text-bold font-medium mt-2"
                   initial={{ textDecoration: includeNumbers ? "none" : "line-through" }}
@@ -177,10 +190,10 @@ function App() {
                   checked={includeNumbers}
                   onChange={() => setIncludeNumbers(!includeNumbers)}
                 />
-              </div>
+              </motion.div>
 
-              
-              <div className="flex space-x-2 mb-4">
+              <motion.div className="flex space-x-2 mb-4" initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1, transition: { duration: 18, ease: "easeInOut", type: "spring", stiffness: 40, damping: 13, delay: 1.9 } }}>
                 <motion.h1
                   className="text-bold font-medium mt-2"
                   initial={{ textDecoration: includeSpecialChars ? "none" : "line-through" }}
@@ -194,20 +207,13 @@ function App() {
                   checked={includeSpecialChars}
                   onChange={() => setIncludeSpecialChars(!includeSpecialChars)}
                 />
-              </div>
-
-
+              </motion.div>
             </div>
           </div>
         </div>
-
       </div>
       <ToastContainer />
     </>
-
-
-
-
   );
 }
 
